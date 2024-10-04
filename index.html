@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Affitti a Breve Termine</title>
+    <style>
+      .rubik-font {
+        font-family: "Rubik", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      /* Stile di base per dispositivi mobili */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        scroll-behavior: smooth;
+      }
+
+      header {
+        /*background-color: #333;*/
+        background-color: white;
+        padding: 20px;
+        text-align: center;
+        color: black;
+        position: fixed; /* Rende l'header fisso in alto */
+        top: 0; /* Posiziona l'header in alto */
+        left: 0; /* Allinea a sinistra */
+        right: 0; /* Allinea a destra */
+        z-index: 1000; /* Assicura che l'header sia sopra ad altri contenuti */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Aggiunge una leggera ombra */
+        transition: background-color 0.3s; /* Transizione dolce per il colore di sfondo */
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+        z-index: 1000;
+      }
+
+      nav.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      nav a {
+        color: black;
+        font-size: 2em;
+        margin: 20px;
+        text-decoration: none;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      nav.active a {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Icona Hamburger */
+      .menu-icon {
+        display: block;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        z-index: 1001;
+      }
+
+      .menu-icon div {
+        background-color: black;
+        height: 4px;
+        margin: 5px 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .menu-icon.cross div:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+        background-color: white;
+      }
+
+      .menu-icon.cross div:nth-child(2) {
+        opacity: 0;
+      }
+
+      .menu-icon.cross div:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+        background-color: white;
+      }
+
+      /* Hero Section */
+      .hero {
+        background-image: url("rome.jpeg"); /* Cambia con una tua immagine */
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 0 20px;
+      }
+
+      .hero h1 {
+        font-size: 2em;
+        margin: 0;
+      }
+
+      .hero p {
+        font-size: 1.2em;
+      }
+
+      section {
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      .services {
+        background-color: #f4f4f4;
+      }
+
+      .service-item {
+        margin: 10px 0;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .testimonials {
+        background-color: #eee;
+      }
+
+      .testimonial-item {
+        margin: 10px 0;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .contact-form {
+        max-width: 100%;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      input,
+      textarea {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      button {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #575757;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      /* Stili per tablet e schermi più grandi */
+      @media (min-width: 768px) {
+        .menu-icon {
+          display: none; /* Nascondi l'icona hamburger su tablet e desktop */
+        }
+
+        nav {
+          position: static;
+          background-color: transparent;
+          flex-direction: row;
+          justify-content: center;
+          height: auto;
+          opacity: 1;
+          visibility: visible;
+        }
+
+        nav a {
+          opacity: 1;
+          transform: translateY(0);
+          font-size: 1em;
+        }
+
+        .hero h1 {
+          font-size: 3em;
+        }
+
+        .hero p {
+          font-size: 1.5em;
+        }
+
+        .service-item,
+        .testimonial-item {
+          display: inline-block;
+          width: calc(50% - 40px);
+          margin: 10px;
+        }
+
+        .contact-form {
+          max-width: 400px;
+        }
+      }
+
+      /* Stili per desktop */
+      @media (min-width: 1024px) {
+        .service-item,
+        .testimonial-item {
+          width: calc(33.33% - 40px);
+        }
+
+        .contact-form {
+          max-width: 500px;
+        }
+
+        header.scrolled {
+          background-color: rgba(
+            255,
+            255,
+            255,
+            0.7
+          ); /* Colore di sfondo trasparente quando scrollato */
+        }
+      }
+
+      @media (max-width: 768px) {
+        nav a {
+          color: white;
+        }
+      }
+
+      .cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 15px; /* Spazio all'interno del banner */
+        z-index: 1000; /* Assicura che il banner si sovrapponga ad altri contenuti */
+        display: flex; /* Usa flexbox per allineare gli elementi */
+        justify-content: space-between; /* Spazia gli elementi */
+        align-items: center; /* Centra verticalmente */
+      }
+
+      .cookie-banner p {
+        margin: 0;
+        flex-grow: 1; /* Permette al testo di espandersi */
+        padding: 0 10px; /* Spazio laterale */
+      }
+
+      .cookie-banner a {
+        color: #ffd700; /* Colore del link */
+        text-decoration: underline; /* Sottolinea il link */
+      }
+
+      #closeBanner {
+        background-color: #ffd700; /* Colore del pulsante */
+        color: #333;
+        border: none; /* Rimuove il bordo predefinito */
+        padding: 8px 15px; /* Spazio interno del pulsante */
+        cursor: pointer; /* Cambia il cursore su hover */
+        border-radius: 5px; /* Angoli arrotondati */
+      }
+
+      #slider {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      /* CSS esistente */
+      .slider-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        overflow-x: auto; /* Abilita lo scroll orizzontale */
+        scroll-snap-type: x mandatory; /* Abilita lo snap al termine dello scroll */
+      }
+
+      .card-slider {
+        display: flex; /* Usa flexbox per disporre le card orizzontalmente */
+      }
+
+      .card {
+        min-width: 300px; /* Larghezza minima delle card */
+        margin: 0 10px; /* Spazio tra le card */
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        scroll-snap-align: start; /* Allineamento per lo snap */
+      }
+    </style>
+  </head>
+  <body class="rubik-font">
+    <header>
+      <img
+        src="logo.png"
+        alt="Logo di HostAnd"
+        style="max-width: 150px; height: auto"
+      />
+      <div class="menu-icon" id="menuIcon" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <nav id="navbar">
+        <a href="#services">Servizi</a>
+        <a href="#slider">Appartamenti</a>
+        <a href="#">Prenota</a>
+        <a href="#">Compra/Vendi</a>
+        <a href="#testimonials">Testimonianze</a>
+        <a href="#contact">Contattaci</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div>
+        <h1>La Tua Casa Lontano da Casa</h1>
+        <p>Trasformiamo ogni appartamento in una perfetta casa vacanza</p>
+        <a href="#services">
+          <button>Scopri di più</button>
+        </a>
+      </div>
+    </div>
+
+    <section id="services" class="services">
+      <h2>I servizi che offriamo</h2>
+      <div class="service-item">
+        <h3>Accoglienza</h3>
+        <p>Prenotazioni e accoglienza clienti: dal Check-in al Check-out.</p>
+      </div>
+      <div class="service-item">
+        <h3>Arredo e Home Staging</h3>
+        <p>
+          Valorizzazione dell'appartamento: arredamento e servizi fotografici.
+        </p>
+      </div>
+      <div class="service-item">
+        <h3>Assistenza 24/7</h3>
+        <p>Cura degli ospiti e assistenza tecnica H24.</p>
+      </div>
+    </section>
+
+    <section id="slider">
+      <div class="slider-container">
+        <div class="card-slider">
+          <div class="card">
+            <h3>Card 1</h3>
+            <p>Descrizione della card 1.</p>
+          </div>
+          <div class="card">
+            <h3>Card 2</h3>
+            <p>Descrizione della card 2.</p>
+          </div>
+          <div class="card">
+            <h3>Card 3</h3>
+            <p>Descrizione della card 3.</p>
+          </div>
+          <div class="card">
+            <h3>Card 4</h3>
+            <p>Descrizione della card 4.</p>
+          </div>
+          <div class="card">
+            <h3>Card 5</h3>
+            <p>Descrizione della card 5.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+      <h2>Cosa Dicono di Noi</h2>
+      <div class="testimonial-item">
+        <p>
+          "Ottimo servizio! La casa era perfetta e il personale molto
+          disponibile."
+        </p>
+        <small>- Luca R.</small>
+      </div>
+      <div class="testimonial-item">
+        <p>
+          "La mia esperienza è stata fantastica. Tutto è andato liscio, senza
+          intoppi."
+        </p>
+        <small>- Maria G.</small>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contattaci</h2>
+      <div class="contact-form">
+        <form id="contactForm">
+          <input type="text" id="name" placeholder="Il tuo nome" required />
+          <input type="email" id="email" placeholder="La tua email" required />
+          <textarea
+            id="message"
+            placeholder="Il tuo messaggio"
+            rows="5"
+            required
+          ></textarea>
+          <button type="submit">Invia</button>
+        </form>
+        <p id="responseMessage"></p>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2024 HOSTAND. Tutti i diritti riservati.</p>
+    </footer>
+
+    <div class="cookie-banner" id="cookieBanner">
+      <p>
+        Questo sito utilizza cookie per migliorare l'esperienza dell'utente.
+        <a href="#">Scopri di più</a>
+      </p>
+      <button id="closeBanner">Chiudi</button>
+    </div>
+
+    <script>
+      // Funzione per mostrare/nascondere il menu
+      function toggleMenu() {
+        const navbar = document.getElementById("navbar");
+        const menuIcon = document.getElementById("menuIcon");
+        const body = document.body;
+
+        navbar.classList.toggle("active");
+        menuIcon.classList.toggle("cross");
+
+        // Disabilita o abilita lo scroll
+        if (navbar.classList.contains("active")) {
+          body.style.overflow = "hidden"; // Disabilita lo scroll
+        } else {
+          body.style.overflow = "auto"; // Riabilita lo scroll
+        }
+      }
+
+      // Chiude il menu se si fa clic su un link
+      const navLinks = document.querySelectorAll("nav a");
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          document.getElementById("navbar").classList.remove("active");
+          document.getElementById("menuIcon").classList.remove("cross");
+          document.body.style.overflow = "auto"; // Riabilita lo scroll
+        });
+      });
+
+      document
+        .getElementById("closeBanner")
+        .addEventListener("click", function () {
+          document.getElementById("cookieBanner").style.display = "none"; // Nasconde il banner
+        });
+
+      const header = document.querySelector("header");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 0) {
+          header.classList.add("scrolled"); // Aggiunge classe se scrollato
+        } else {
+          header.classList.remove("scrolled"); // Rimuove classe se in cima
+        }
+      });
+    </script>
+  </body>
+</html>
